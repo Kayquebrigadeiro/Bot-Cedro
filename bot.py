@@ -799,12 +799,17 @@ def build_app() -> Application:
     return app
 
 
-def main() -> None:
+async def main() -> None:
     db.init()
     app = build_app()
     logger.info("%s iniciado.", BRAND)
-    app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+    import asyncio
+    await asyncio.Event().wait()
 
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+    asyncio.run(main())
