@@ -200,13 +200,7 @@ def admin_only(func):
 async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     reset_admin_flow(ctx)
     user = update.effective_user
-    try:
-        db.register_user(user.id, user.full_name)
-    except Exception as e:
-        logger.exception("Erro ao registrar usuário: %s", e)
-        await update.message.reply_text(f"Erro ao conectar no banco de dados. Contate o administrador.")
-        return
-    
+    db.register_user(user.id, user.full_name)
     text = (
         f"{HEADER}"
         f"Ola, <b>{safe(user.first_name)}</b>.\n"
@@ -809,24 +803,6 @@ async def main() -> None:
     db.init()
     app = build_app()
     logger.info("%s iniciado.", BRAND)
-    
-    # Servidor web fake para Render
-    from aiohttp import web
-    async def health(request):
-        return web.Response(text="Bot online")
-    
-    web_app = web.Application()
-    web_app.router.add_get("/", health)
-    runner = web.AppRunner(web_app)
-    await runner.setup()
-    
-    import os
-    port = int(os.environ.get("PORT", 10000))
-    site = web.TCPSite(runner, "0.0.0.0", port)
-    await site.start()
-    logger.info("Servidor web na porta %s", port)
-    
-    # Inicia bot
     await app.initialize()
     await app.start()
     await app.updater.start_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
