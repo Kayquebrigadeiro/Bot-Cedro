@@ -1,15 +1,29 @@
-"""Testa a conexão real com PostgreSQL."""
+"""Testa a conexão real com Supabase."""
 
 import os
 
-# Configurar DATABASE_URL - formato correto do Render
-os.environ['DATABASE_URL'] = 'postgresql://cedro_bot_db_user:iSncvowOPA2jhDrulsAwi5tZBtsPpe3O@dpg-d8ee7gurnols73a70o10-a.cedro-bot-db.svc.railway.internal:5432/cedro_bot_db'
+# Configurar variáveis de ambiente do Supabase
+os.environ['SUPABASE_USER'] = 'postgres'
+os.environ['SUPABASE_PASSWORD'] = '[tiÇ@AMOR123]'
+os.environ['SUPABASE_HOST'] = 'db.kqjxaeutnnhhrcjvhadx.supabase.co'
+os.environ['SUPABASE_PORT'] = '5432'
+os.environ['SUPABASE_DATABASE'] = 'postgres'
 
 import psycopg2
+import urllib.parse
+
+# Fazer URL encoding da senha
+password = urllib.parse.quote_plus('[tiÇ@AMOR123]')
+user = urllib.parse.quote_plus('postgres')
+host = 'db.kqjxaeutnnhhrcjvhadx.supabase.co'
+port = 5432
+database = 'postgres'
+
+dsn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
 
 try:
-    print("Tentando conectar ao PostgreSQL...")
-    conn = psycopg2.connect(os.environ['DATABASE_URL'])
+    print("Tentando conectar ao Supabase...")
+    conn = psycopg2.connect(dsn)
     print("[OK] Conectado com sucesso!")
     
     cursor = conn.cursor()
