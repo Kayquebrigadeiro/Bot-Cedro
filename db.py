@@ -1,6 +1,6 @@
 """Camada de dados do bot CEDRO.
 
-Suporta SQLite (local) e PostgreSQL (Render).
+Suporta SQLite (local) e PostgreSQL (Supabase/Render).
 """
 
 import os
@@ -16,7 +16,6 @@ USE_POSTGRES = bool(DATABASE_URL)
 
 def _parse_postgres_url(url: str) -> dict:
     """Parse PostgreSQL URL para componentes."""
-    # Tenta formato completo: postgresql://user:pass@host:port/db
     match = re.match(r'postgres(?:ql)?://([^:]+):([^@]+)@([^:/]+)(?::(\d+))?/(\w+)', url)
     if match:
         return {
