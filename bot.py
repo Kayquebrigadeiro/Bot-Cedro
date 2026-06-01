@@ -803,6 +803,24 @@ async def main() -> None:
     db.init()
     app = build_app()
     logger.info("%s iniciado.", BRAND)
+    
+    # Servidor web fake para Render
+    from aiohttp import web
+    async def health(request):
+        return web.Response(text="Bot online")
+    
+    web_app = web.Application()
+    web_app.router.add_get("/", health)
+    runner = web.AppRunner(web_app)
+    await runner.setup()
+    
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    logger.info("Servidor web na porta %s", port)
+    
+    # Inicia bot
     await app.initialize()
     await app.start()
     await app.updater.start_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
