@@ -1,0 +1,13 @@
+web:
+  startTime: 2026-05-31T22:00:00Z
+  env: public
+  region: iad
+  plan: free
+  autoDeploy: true
+  healthCheckPath: /
+  instanceType: free
+  scalingMinInstances: 1
+  scalingMaxInstances: 1
+  scalingStep: 1
+  scalingCooldown: 300
+  scalingPolicy: balanced

@@ -1,91 +1,71 @@
-# 🌿 CEDRO BOT — Apoio Psicológico no Telegram
+# CEDRO Bot
 
-Bot do projeto **Cedro** para organização de conteúdos de apoio psicológico: eBooks, podcasts e sessões em grupo.
+Bot de apoio psicológico no Telegram para organizar e distribuir eBooks, podcasts e sessões em grupo.
 
----
+## Funcionalidades
 
-## ⚙️ Configuração Inicial
+- Menu principal com botões para eBooks, podcasts e sessões.
+- Painel administrativo protegido por ID do Telegram.
+- Cadastro de eBooks em PDF com validação de arquivo.
+- Cadastro de podcasts por áudio, voz ou arquivo de áudio.
+- Agendamento de sessões futuras com validação de data e link.
+- Notificação automática dos usuários cadastrados quando uma sessão é criada.
+- Estatísticas de usuários, conteúdos, sessões e acessos.
+- Banco SQLite local, leve e pronto para deploy.
 
-### 1. Criar o bot no Telegram
-1. Abra o Telegram e busque por **@BotFather**
-2. Envie `/newbot` e siga as instruções
-3. Copie o **token** gerado
+## Configuração
 
-### 2. Descobrir seu ID de administrador
-1. Busque por **@userinfobot** no Telegram
-2. Envie qualquer mensagem — ele retorna seu ID numérico
+Crie variáveis de ambiente ou um arquivo `.env` local:
 
-### 3. Editar o `config.py`
-```python
-TOKEN = "SEU_TOKEN_AQUI"      # Token do BotFather
-ADMIN_IDS = {SEU_ID_AQUI}     # Seu ID numérico
+```env
+BOT_TOKEN=token_do_botfather
+ADMIN_IDS=6197047295
+DB_FILE=cedro.db
 ```
 
----
+Para descobrir seu ID, envie uma mensagem para `@userinfobot` no Telegram.
 
-## 🚀 Instalação e Execução
+## Rodar localmente
 
 ```bash
-# Instalar dependências
 pip install -r requirements.txt
-
-# Rodar o bot
+$env:BOT_TOKEN="token_do_botfather"
+$env:ADMIN_IDS="6197047295"
 python bot.py
 ```
 
----
+No Linux:
 
-## 📋 Comandos
-
-### Usuários
-| Comando | Descrição |
-|---------|-----------|
-| `/start` | Menu principal |
-| `/ebooks` | Lista de eBooks disponíveis |
-| `/podcasts` | Lista de podcasts |
-| `/sessoes` | Sessões em grupo agendadas |
-| `/ajuda` | Ajuda e lista de comandos |
-
-### Administradores
-| Comando | Descrição |
-|---------|-----------|
-| `/admin` | Painel administrativo |
-| `/addebook` | Adicionar novo eBook |
-| `/addpodcast` | Adicionar novo podcast |
-| `/addsessao` | Agendar sessão em grupo |
-| `/cancelar` | Cancelar operação em andamento |
-
----
-
-## 🗂️ Estrutura de Arquivos
-
-```
-cedro_bot/
-├── bot.py          # Lógica principal do bot
-├── db.py           # Banco de dados SQLite
-├── config.py       # Token e configurações
-├── requirements.txt
-└── README.md
+```bash
+export BOT_TOKEN="token_do_botfather"
+export ADMIN_IDS="6197047295"
+python bot.py
 ```
 
----
+## Deploy no Discloud
 
-## ✨ Funcionalidades
+Arquivos necessários já estão no projeto:
 
-- **eBooks**: Upload de PDFs diretamente no Telegram. Usuários baixam com um clique.
-- **Podcasts**: Upload de áudios (MP3/OGG). Usuários ouvem diretamente no app.
-- **Sessões em Grupo**: Agendamento com data/hora e link de chamada. Todos os usuários recebem notificação automática.
-- **Painel Admin**: Interface de botões para gerenciar todo o conteúdo.
-- **Estatísticas**: Visualização de usuários, eBooks, podcasts e sessões cadastradas.
-- **Logs de acesso**: Rastreamento de quais conteúdos foram acessados.
+- `discloud.config`
+- `requirements.txt`
+- `bot.py`
+- `db.py`
+- `config.py`
 
----
+Configure no Discloud as variáveis `BOT_TOKEN` e `ADMIN_IDS`. Depois envie o projeto compactado ou use o método de upload que você já utiliza na plataforma.
 
-## 💡 Por que Telegram?
+## Comandos
 
-- Suporte nativo a envio/recebimento de arquivos (PDF, áudio) via API
-- Notificações push confiáveis e gratuitas
-- Interface de botões rica e interativa
-- Grupos e canais ilimitados
-- API robusta e bem documentada
-- Sem custo adicional de servidores para armazenar arquivos (o Telegram armazena)
+| Comando | Descrição |
+| --- | --- |
+| `/start` | Abre o menu principal |
+| `/ebooks` | Lista eBooks disponíveis |
+| `/podcasts` | Lista podcasts disponíveis |
+| `/sessoes` | Lista sessões agendadas |
+| `/ajuda` | Mostra ajuda |
+| `/admin` | Abre o painel administrativo |
+| `/cancelar` | Cancela uma operação em andamento |
+
+## Observação de segurança
+
+O token do bot não fica mais fixo no código. Para apresentação e deploy, deixe `BOT_TOKEN` configurado no ambiente.
