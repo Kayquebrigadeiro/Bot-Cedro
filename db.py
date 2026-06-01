@@ -23,8 +23,15 @@ def connect():
 
 
 def init() -> None:
-    """Inicializa o banco de dados (não faz nada, as tabelas já devem existir)."""
-    pass
+    """Inicializa o banco de dados (testa conexão)."""
+    try:
+        with connect() as con:
+            cursor = con.cursor()
+            cursor.execute("SELECT 1")
+            print("✓ Conexão com banco OK")
+    except Exception as e:
+        print(f"✗ Erro ao conectar no banco: {e}")
+        raise
 
 
 def register_user(user_id: int, name: str) -> None:

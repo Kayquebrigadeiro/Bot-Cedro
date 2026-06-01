@@ -200,7 +200,13 @@ def admin_only(func):
 async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     reset_admin_flow(ctx)
     user = update.effective_user
-    db.register_user(user.id, user.full_name)
+    try:
+        db.register_user(user.id, user.full_name)
+    except Exception as e:
+        logger.exception("Erro ao registrar usuário: %s", e)
+        await update.message.reply_text(f"Erro ao conectar no banco de dados. Contate o administrador.")
+        return
+    
     text = (
         f"{HEADER}"
         f"Ola, <b>{safe(user.first_name)}</b>.\n"
